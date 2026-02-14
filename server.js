@@ -2,7 +2,7 @@
 import Fastify from 'fastify'
 import dbConnector from './our-db-connector.js'
 import testroute from './routes/testroute.js'
-import routes from './routes/testroute.js'
+import routes from './routes/routes.js'
 
 
 const fastify = Fastify({
@@ -14,7 +14,7 @@ const fastify = Fastify({
 //   return { hello: 'world' }
 // })
 fastify.register(dbConnector)
-
+// fastify.register(testroute)
 fastify.register(routes)
 
 

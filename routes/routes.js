@@ -10,13 +10,13 @@
  * @param {Object} options plugin options, refer to https://fastify.dev/docs/latest/Reference/Plugins/#plugin-options
  */
 async function routes (fastify, options) {
-  const collection = fastify.mongo.db.collection('test_collection')
+  const collection = fastify.mongo.db.collection('films')
 
-  // fastify.get('/', async (request, reply) => {
-  //   return { hello: 'world202' }
-  // })
+  fastify.get('/', async (request, reply) => {
+    return { hello: 'world202' }
+  })
 
-  fastify.get('/animals', async (request, reply) => {
+  fastify.get('/films', async (request, reply) => {
     const result = await collection.find().toArray()
     if (result.length === 0) {
       throw new Error('No documents found')
@@ -24,29 +24,31 @@ async function routes (fastify, options) {
     return result
   })
 
-  fastify.get('/animals/:animal', async (request, reply) => {
-    const result = await collection.findOne({ animal: request.params.animal })
+  fastify.get('/films/:film', async (request, reply) => {
+    const result = await collection.findOne({ film: request.params.title })
     if (!result) {
       throw new Error('Invalid value')
     }
     return result
   })
 
-  const animalBodyJsonSchema = {
+  const filmBodyJsonSchema = {
     type: 'object',
-    required: ['animal'],
+    required: ['title','premiereYear','seen' ],
     properties: {
-      animal: { type: 'string' },
+      title: { type: 'string' },
+      premiereYear: { type: 'integer' },
+      seen: { type: 'boolean' },
     },
   }
 
   const schema = {
-    body: animalBodyJsonSchema,
+    body: filmBodyJsonSchema,
   }
 
-  fastify.post('/animals', { schema }, async (request, reply) => {
+  fastify.post('/films', { schema }, async (request, reply) => {
     // we can use the `request.body` object to get the data sent by the client
-    const result = await collection.insertOne({ animal: request.body.animal })
+    const result = await collection.insertOne({ title: request.body.title, premiereYear: request.body.premiereYear, seen: request.body.seen, createdAt: new Date()  })
     return result
   })
 }
