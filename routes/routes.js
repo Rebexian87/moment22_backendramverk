@@ -3,6 +3,8 @@
 //     return { hello: 'world2' }
 //   })
 // }
+import { ObjectId } from '@fastify/mongodb'
+
 
 /**
  * A plugin that provide encapsulated routes
@@ -51,6 +53,22 @@ async function routes (fastify, options) {
     const result = await collection.insertOne({ title: request.body.title, premiereYear: request.body.premiereYear, seen: request.body.seen, createdAt: new Date()  })
     return result
   })
+
+  fastify.delete('/film/:id', async function (request, reply) {
+    const films=fastify.mongo.db.collection('films')
+    const id = new ObjectId(request.params.id)
+    
+    try {
+      
+      const film = await films.deleteOne({_id: id})
+
+      return film }catch (error){
+        return "felelele" + error 
+
+      }
+    
+    }
+  )
 }
 
 

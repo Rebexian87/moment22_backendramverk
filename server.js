@@ -3,6 +3,7 @@ import Fastify from 'fastify'
 import dbConnector from './our-db-connector.js'
 import testroute from './routes/testroute.js'
 import routes from './routes/routes.js'
+import { ObjectId } from '@fastify/mongodb'
 
 
 const fastify = Fastify({
