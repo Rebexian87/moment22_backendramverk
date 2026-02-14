@@ -1,6 +1,10 @@
 // Import the framework and instantiate it
 import Fastify from 'fastify'
+import dbConnector from './our-db-connector.js'
 import testroute from './routes/testroute.js'
+import routes from './routes/testroute.js'
+
+
 const fastify = Fastify({
   logger: true
 })
@@ -9,8 +13,9 @@ const fastify = Fastify({
 // fastify.get('/', async function handler (request, reply) {
 //   return { hello: 'world' }
 // })
+fastify.register(dbConnector)
 
-fastify.register(testroute)
+fastify.register(routes)
 
 
 // Run the server!
