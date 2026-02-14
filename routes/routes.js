@@ -69,6 +69,32 @@ async function routes (fastify, options) {
     
     }
   )
+
+    fastify.put('/film/:id', async function (request, reply) {
+    const films=fastify.mongo.db.collection('films')
+    const id = new ObjectId(request.params.id)
+    const {title, premiereYear, seen} = request.body 
+    
+    try {
+      
+      const film = await films.updateOne({_id: id}, {$set: {title, premiereYear, seen}})
+
+      return film }catch (error){
+        return "gick inte att uppdatera" + error 
+
+      }
+    
+    }
+  )
+
+
+
+
+
+
+
+
+
 }
 
 
