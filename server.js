@@ -18,6 +18,15 @@ fastify.register(dbConnector)
 // fastify.register(testroute)
 fastify.register(routes)
 
+fastify.setErrorHandler((error, request, reply) => {
+  if(error.validation) {
+    return reply.code(400).send(
+      {error: error.message}
+    )
+  }
+  reply.code(500).send ({error:'server error'})
+})
+
 
 // Run the server!
 try {

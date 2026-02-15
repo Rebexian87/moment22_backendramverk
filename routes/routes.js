@@ -5,6 +5,10 @@
 // }
 import { ObjectId } from '@fastify/mongodb'
 import filmBodyJsonSchema from '../models/film.model.js'
+import { getAllFilms } from '../controllers/film.controller.js'
+import { createFilm } from '../controllers/film.controller.js'
+import { deleteFilm } from '../controllers/film.controller.js'
+import { updateFilm } from '../controllers/film.controller.js'
 
 
 /**
@@ -19,13 +23,15 @@ async function routes (fastify, options) {
     return { hello: 'world202' }
   })
 
-  fastify.get('/films', async (request, reply) => {
-    const result = await collection.find().toArray()
-    if (result.length === 0) {
-      throw new Error('No documents found')
-    }
-    return result
-  })
+  fastify.get('/films', getAllFilms
+    // async (request, reply) => {
+    // const result = await collection.find().toArray()
+    // if (result.length === 0) {
+    //   throw new Error('No documents found')
+    // }
+    // return result
+  // }
+)
 
   fastify.get('/films/:film', async (request, reply) => {
     const result = await collection.findOne({ film: request.params.title })
@@ -49,43 +55,47 @@ async function routes (fastify, options) {
     body: filmBodyJsonSchema,
   }
 
-  fastify.post('/films', { schema }, async (request, reply) => {
-    // we can use the `request.body` object to get the data sent by the client
-    const result = await collection.insertOne({ title: request.body.title, premiereYear: request.body.premiereYear, seen: request.body.seen, createdAt: new Date()  })
-    return result
-  })
+  fastify.post('/films',  { schema }, createFilm
+  //   async (request, reply) => {
+  //   // we can use the `request.body` object to get the data sent by the client
+  //   const result = await collection.insertOne({ title: request.body.title, premiereYear: request.body.premiereYear, seen: request.body.seen, createdAt: new Date()  })
+  //   return result
+  // }
+)
 
-  fastify.delete('/film/:id', async function (request, reply) {
-    const films=fastify.mongo.db.collection('films')
-    const id = new ObjectId(request.params.id)
+  fastify.delete('/film/:id', deleteFilm
     
-    try {
+    // async function (request, reply) {
+    // const films=fastify.mongo.db.collection('films')
+    // const id = new ObjectId(request.params.id)
+    
+    // try {
       
-      const film = await films.deleteOne({_id: id})
+    //   const film = await films.deleteOne({_id: id})
 
-      return film }catch (error){
-        return "felelele" + error 
+    //   return film }catch (error){
+    //     return "felelele" + error 
 
-      }
+    //   }
     
-    }
+    // }
   )
 
-    fastify.put('/film/:id', async function (request, reply) {
-    const films=fastify.mongo.db.collection('films')
-    const id = new ObjectId(request.params.id)
-    const {title, premiereYear, seen} = request.body 
+    fastify.put('/film/:id', updateFilm
+    //   async function (request, reply) {
+    //     const films=fastify.mongo.db.collection('films')
+    //     const id = new ObjectId(request.params.id)
+    //     const {title, premiereYear, seen} = request.body 
     
-    try {
-      
-      const film = await films.updateOne({_id: id}, {$set: {title, premiereYear, seen}})
+    //     try {
+    //       const film = await films.updateOne({_id: id}, {$set: {title, premiereYear, seen}})
 
-      return film }catch (error){
-        return "gick inte att uppdatera" + error 
+    //       return film }catch (error){
+    //       return "gick inte att uppdatera" + error 
 
-      }
+    //   }
     
-    }
+    // }
   )
 
 
