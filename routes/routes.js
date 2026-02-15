@@ -4,6 +4,7 @@
 //   })
 // }
 import { ObjectId } from '@fastify/mongodb'
+import filmBodyJsonSchema from '../models/film.model.js'
 
 
 /**
@@ -34,15 +35,15 @@ async function routes (fastify, options) {
     return result
   })
 
-  const filmBodyJsonSchema = {
-    type: 'object',
-    required: ['title','premiereYear','seen' ],
-    properties: {
-      title: { type: 'string' },
-      premiereYear: { type: 'integer' },
-      seen: { type: 'boolean' },
-    },
-  }
+  // const filmBodyJsonSchema = {
+  //   type: 'object',
+  //   required: ['title','premiereYear','seen' ],
+  //   properties: {
+  //     title: { type: 'string' },
+  //     premiereYear: { type: 'integer' },
+  //     seen: { type: 'boolean' },
+  //   },
+  // }
 
   const schema = {
     body: filmBodyJsonSchema,
