@@ -55,3 +55,14 @@ async function routes (fastify, options) {
 
 //ESM
 export default routes;
+
+
+
+
+  //    (request, reply) => {
+  //   const result = await collection.findOne({ film: request.params.title })
+  //   if (!result) {
+  //     throw new Error('Invalid value')
+  //   }
+  //   return result
+  // }

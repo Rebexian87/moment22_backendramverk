@@ -11,6 +11,17 @@ import { ObjectId } from '@fastify/mongodb'
         throw new Error('No documents found')
       }
       return result }
+    
+    //method to get one film with a specific id.
+    export const getOneFilm =  async (request, reply) => {
+    const collection=request.server.mongo.db.collection('films')
+    const id = new ObjectId(request.params.id)
+    const result = await collection.findOne({ _id: id })
+    if (!result) {
+      throw new Error('Invalid value')
+    }
+    return result
+  }
 
     //method to create a film (POST)  
     export const createFilm =  async (request, reply) => {
@@ -20,8 +31,10 @@ import { ObjectId } from '@fastify/mongodb'
     const result = await collection.insertOne({ title: request.body.title , premiereYear: request.body.premiereYear , seen: request.body.seen, createdAt: new Date()  
  
     })
-    return result
+    return reply.code(200).send("Your film has been added")
   }
+
+  
 
     //method to delete a film (delete)  
     export const deleteFilm =   async function (request, reply) {
@@ -33,8 +46,8 @@ import { ObjectId } from '@fastify/mongodb'
       
       const film = await films.deleteOne({_id: id})
 
-      return film }catch (error){
-        return "felelele" + error 
+      return reply.code(200).send("Your film has been deleted") }catch (error){
+        return "The film could not be deleted" + error 
 
       }
     
@@ -49,10 +62,11 @@ import { ObjectId } from '@fastify/mongodb'
         try {
           const film = await films.updateOne({_id: id}, {$set: {title, premiereYear, seen}})
 
-          return film }catch (error){
-          return "gick inte att uppdatera" + error 
+          return reply.code(200).send("Your film has been updated") }catch (error){
+          return "The film could not get updated" + error 
 
       }
     
     }
 
+//return reply.code(200).send("Your film has been added")

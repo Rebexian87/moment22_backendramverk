@@ -20,7 +20,7 @@
     properties: {
       title: 'Cant be empty and needs to be a string',
       premiereYear: 'Dont forget to write a year, needs to be aa number',
-      seen: 'Dont forget to write if you have seen it (true or false)',
+      seen: 'Dont forget to write if you have seen it, you need to write true or false',
     }
   }
   }

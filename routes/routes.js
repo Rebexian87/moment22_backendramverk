@@ -7,6 +7,7 @@ import { getAllFilms } from '../controllers/film.controller.js'
 import { createFilm } from '../controllers/film.controller.js'
 import { deleteFilm } from '../controllers/film.controller.js'
 import { updateFilm } from '../controllers/film.controller.js'
+import { getOneFilm } from '../controllers/film.controller.js'
 
 
 //Routes
@@ -20,13 +21,7 @@ async function routes (fastify, options) {
 
   fastify.get('/films', getAllFilms)
 
-  fastify.get('/films/:film', async (request, reply) => {
-    const result = await collection.findOne({ film: request.params.title })
-    if (!result) {
-      throw new Error('Invalid value')
-    }
-    return result
-  })
+  fastify.get('/film/:id', getOneFilm)
 
 
   const schema = {
@@ -34,13 +29,13 @@ async function routes (fastify, options) {
   }
 
   //Route to create a film
-  fastify.post('/films',  { schema }, createFilm)
+  fastify.post('/film',  { schema }, createFilm)
 
   //Route to delete a film
   fastify.delete('/film/:id', deleteFilm)
 
   //Route to update a film
-  fastify.put('/film/:id', updateFilm)
+  fastify.put('/film/:id', { schema },updateFilm)
 
 }
 
