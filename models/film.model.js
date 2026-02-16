@@ -1,5 +1,6 @@
 
-  
+  //Schema for the films with errormessages. 
+
   const filmBodyJsonSchema = {
     type: 'object',
     required: ['title','premiereYear','seen' ],

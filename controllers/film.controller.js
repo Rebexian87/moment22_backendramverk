@@ -1,8 +1,9 @@
+//Controllers that the routes in file routes.js uses
 
  
 import { ObjectId } from '@fastify/mongodb'
     
-    
+    //method to get all Films (GET)
     export const getAllFilms = async (request, reply) => { 
       const collection = request.server.mongo.db.collection('films')
       const result = await collection.find().toArray()
@@ -11,6 +12,7 @@ import { ObjectId } from '@fastify/mongodb'
       }
       return result }
 
+    //method to create a film (POST)  
     export const createFilm =  async (request, reply) => {
     // we can use the `request.body` object to get the data sent by the client
 
@@ -21,6 +23,7 @@ import { ObjectId } from '@fastify/mongodb'
     return result
   }
 
+    //method to delete a film (delete)  
     export const deleteFilm =   async function (request, reply) {
     const films=request.server.mongo.db.collection('films')
     const id = new ObjectId(request.params.id)
@@ -37,6 +40,7 @@ import { ObjectId } from '@fastify/mongodb'
     
     }
 
+    //method to update a film (PUT)  
     export const updateFilm = async function (request, reply) {
         const films=request.server.mongo.db.collection('films')
         const id = new ObjectId(request.params.id)

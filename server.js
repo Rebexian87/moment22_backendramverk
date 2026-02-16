@@ -1,16 +1,15 @@
-// Import the framework and instantiate it
+
 import Fastify from 'fastify'
 import dbConnector from './our-db-connector.js'
-import testroute from './routes/testroute.js'
 import routes from './routes/routes.js'
-import { ObjectId } from '@fastify/mongodb'
 import ajvErrors from 'ajv-errors'
+
 
 
 const fastify = Fastify({
   logger: true,
-
-   ajv: {
+    //ajv-errorhandler
+    ajv: {
     customOptions: {
       allErrors:true,
       coerceTypes:false
@@ -19,23 +18,13 @@ const fastify = Fastify({
   }
 })
 
-// Declare a route
-// fastify.get('/', async function handler (request, reply) {
-//   return { hello: 'world' }
-// })
+//Uses the connection
 fastify.register(dbConnector)
-// fastify.register(testroute)
+
+//Uses the routes
 fastify.register(routes)
 
-// const app = Fastify ({
-//   ajv: {
-//     customOptions: {
-//       allErrors:true
-//     },
-//     plugins: [ajvErrors]
-//   }
-// })
-
+//Handels the errors 
 fastify.setErrorHandler((error, request, reply) => {
   if(error.validation) {
     return reply.code(400).send(

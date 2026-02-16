@@ -1,37 +1,24 @@
-// async function testroute (fastify, options) {
-//   fastify.get('/', async (request, reply) => {
-//     return { hello: 'world2' }
-//   })
-// }
-import { ObjectId } from '@fastify/mongodb'
+
+//Import the schema
 import filmBodyJsonSchema from '../models/film.model.js'
+
+//imports from film.controller.js with the functions to get, post, put and delete films
 import { getAllFilms } from '../controllers/film.controller.js'
 import { createFilm } from '../controllers/film.controller.js'
 import { deleteFilm } from '../controllers/film.controller.js'
 import { updateFilm } from '../controllers/film.controller.js'
 
 
-/**
- * A plugin that provide encapsulated routes
- * @param {FastifyInstance} fastify encapsulated fastify instance
- * @param {Object} options plugin options, refer to https://fastify.dev/docs/latest/Reference/Plugins/#plugin-options
- */
+//Routes
 async function routes (fastify, options) {
   const collection = fastify.mongo.db.collection('films')
 
+  //Route to get the films
   fastify.get('/', async (request, reply) => {
     return { hello: 'world202' }
   })
 
-  fastify.get('/films', getAllFilms
-    // async (request, reply) => {
-    // const result = await collection.find().toArray()
-    // if (result.length === 0) {
-    //   throw new Error('No documents found')
-    // }
-    // return result
-  // }
-)
+  fastify.get('/films', getAllFilms)
 
   fastify.get('/films/:film', async (request, reply) => {
     const result = await collection.findOne({ film: request.params.title })
@@ -41,70 +28,19 @@ async function routes (fastify, options) {
     return result
   })
 
-  // const filmBodyJsonSchema = {
-  //   type: 'object',
-  //   required: ['title','premiereYear','seen' ],
-  //   properties: {
-  //     title: { type: 'string' },
-  //     premiereYear: { type: 'integer' },
-  //     seen: { type: 'boolean' },
-  //   },
-  // }
 
   const schema = {
     body: filmBodyJsonSchema,
   }
 
-  fastify.post('/films',  { schema }, createFilm
-  //   async (request, reply) => {
-  //   // we can use the `request.body` object to get the data sent by the client
-  //   const result = await collection.insertOne({ title: request.body.title, premiereYear: request.body.premiereYear, seen: request.body.seen, createdAt: new Date()  })
-  //   return result
-  // }
-)
+  //Route to create a film
+  fastify.post('/films',  { schema }, createFilm)
 
-  fastify.delete('/film/:id', deleteFilm
-    
-    // async function (request, reply) {
-    // const films=fastify.mongo.db.collection('films')
-    // const id = new ObjectId(request.params.id)
-    
-    // try {
-      
-    //   const film = await films.deleteOne({_id: id})
+  //Route to delete a film
+  fastify.delete('/film/:id', deleteFilm)
 
-    //   return film }catch (error){
-    //     return "felelele" + error 
-
-    //   }
-    
-    // }
-  )
-
-    fastify.put('/film/:id', updateFilm
-    //   async function (request, reply) {
-    //     const films=fastify.mongo.db.collection('films')
-    //     const id = new ObjectId(request.params.id)
-    //     const {title, premiereYear, seen} = request.body 
-    
-    //     try {
-    //       const film = await films.updateOne({_id: id}, {$set: {title, premiereYear, seen}})
-
-    //       return film }catch (error){
-    //       return "gick inte att uppdatera" + error 
-
-    //   }
-    
-    // }
-  )
-
-
-
-
-
-
-
-
+  //Route to update a film
+  fastify.put('/film/:id', updateFilm)
 
 }
 
