@@ -25,7 +25,6 @@ import { ObjectId } from '@fastify/mongodb'
 
     //method to create a film (POST)  
     export const createFilm =  async (request, reply) => {
-    // we can use the `request.body` object to get the data sent by the client
 
     const collection = request.server.mongo.db.collection('films')
     const result = await collection.insertOne({ title: request.body.title , premiereYear: request.body.premiereYear , seen: request.body.seen, createdAt: new Date()  
