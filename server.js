@@ -3,6 +3,7 @@ import Fastify from 'fastify'
 import dbConnector from './our-db-connector.js'
 import routes from './routes/routes.js'
 import ajvErrors from 'ajv-errors'
+import cors from '@fastify/cors'
 
 
 
@@ -23,6 +24,11 @@ fastify.register(dbConnector)
 
 //Uses the routes
 fastify.register(routes)
+
+await fastify.register(cors, {
+  origin: ['http://localhost:5173', 'http://127.0.0.1:5173'],
+  methods: ['GET', 'POST', 'DELETE']
+})
 
 //Handels the errors 
 fastify.setErrorHandler((error, request, reply) => {
